@@ -45,3 +45,6 @@ systemctl restart ssh
 
 Bitrix Push server 2.0 устанавливается через меню BitrixVM: 9. Configure Push/RTC service for the pool
 
+## Мануал по настройке exim
+
+https://www.acrit-studio.ru/pantry-programmer/knowledge-base/kak-nastroit-bitrixenv-bitrixvm-otsylat-pochtu-napryamuyu-bez-avtorizatsii-na-promezhutochnykh-pocht/
