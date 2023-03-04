@@ -4,9 +4,11 @@
 {
     "folders": [
         {
+            "name": "documentroot: разработка",
             "uri": "vscode-remote://ssh-remote+derevo/home/bitrix/www"
         },
         {
+            "name": "Общие заметки",
             "path": "/home/alex/projects/howto"
         }
     ],
