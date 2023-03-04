@@ -27,6 +27,22 @@
         "favorites.currentGroup": "Template",
         "favorites.resources": [
             {
+                "filePath": "bitrix",
+                "group": "Default"
+            },
+            {
+                "filePath": "bitrix/.settings.php",
+                "group": "Default"
+            },
+            {
+                "filePath": "bitrix/php_interface/dbconn.php",
+                "group": "Default"
+            },
+            {
+                "filePath": "local",
+                "group": "Default"
+            },
+            {
                 "filePath": "local/templates/general/footer.php",
                 "group": "Template"
             },
