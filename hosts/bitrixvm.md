@@ -57,5 +57,6 @@ dd if=/dev/zero of=/swapfile count=4096 bs=1MiB
 chmod 600 /swapfile
 mkswap /swapfile
 nano /etc/fstab
+sawapon -a
 ```
 Добавляем: /swapfile   swap    swap    sw  0   0
