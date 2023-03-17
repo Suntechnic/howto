@@ -33,11 +33,6 @@ git submodule add git@github.com:Suntechnic/xComponents.git local/components/x
 git submodule add git@github.com:Suntechnic/xExtensions.git local/js/x
 ```
 
-Добавляем вертску:
-```bash
-git submodule add тут_репа_верстки local/assets
-```
-
 ## Устанавливаем модули composer
 
 Обязательно редактируем composer.json заменяя Test/test на название проекта.
@@ -65,6 +60,41 @@ git submodule add тут_репа_верстки local/assets
 cd local/php_interface;
 composer update;
 cd -
+```
+
+## init.php:
+
+```php
+<?php
+
+if ($_SERVER['APPLICATION_ENV']) {
+    define('APPLICATION_ENV',$_SERVER['APPLICATION_ENV']);
+} else {
+    define('APPLICATION_ENV','production');
+}
+
+require __DIR__ . '/vendor/autoload.php';
+
+\Kint\Renderer\RichRenderer::$folder = true;
+if (!defined('APPLICATION_ENV') || APPLICATION_ENV != 'dev') {
+    \Kint::$enabled_mode = false;
+} else if (defined('APPLICATION_ENV') || APPLICATION_ENV != 'production') {
+    define('VUEJS_DEBUG', true);
+}
+```
+
+## каркас X
+
+```sh
+git clone https://github.com/Suntechnic/x.git /tmp/x
+mv /tmp/x/local/templates local/
+mv /tmp/x/local/php_interface/migrations local/php_interface
+mv /tmp/x/_test/ .
+```
+
+Добавляем вертску:
+```bash
+git submodule add тут_репа_верстки local/assets
 ```
 
 ## Если необходимо изменить параметры загрузки ядра или установить какие-то параметры до загрузки, а так же выполнить обработку, например переключение языков:

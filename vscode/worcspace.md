@@ -15,10 +15,10 @@
     "remoteAuthority": "ssh-remote+derevo",
     "settings": {
         "workbench.colorCustomizations": {
-            "activityBar.background": "#4FA600",
-            "activityBar.foreground": "#E30613",
-            "activityBar.activeBackground": "#fff",
-            "activityBar.inactiveForeground": "#fff",
+            "activityBar.background": "#4FA600", // бэкграунд панели
+            "activityBar.inactiveForeground": "#fff", // фореграунд панели
+            "activityBar.activeBackground": "#fff", // бэкграунд активной кнопки
+            "activityBar.foreground": "#E30613", // фореграунд активной кнопки и при наведении
         },
         "favorites.groups": [
             "Default",
@@ -27,15 +27,15 @@
         "favorites.currentGroup": "Template",
         "favorites.resources": [
             {
-                "filePath": "bitrix",
+                "filePath": "/home/bitrix/www/bitrix",
                 "group": "Default"
             },
             {
-                "filePath": "bitrix/.settings.php",
+                "filePath": "/home/bitrix/www/bitrix/.settings.php",
                 "group": "Default"
             },
             {
-                "filePath": "bitrix/php_interface/dbconn.php",
+                "filePath": "/home/bitrix/www/bitrix/php_interface/dbconn.php",
                 "group": "Default"
             },
             {
@@ -43,15 +43,15 @@
                 "group": "Default"
             },
             {
-                "filePath": "local/templates/general/footer.php",
+                "filePath": "/home/bitrix/www/local/templates/general/footer.php",
                 "group": "Template"
             },
             {
-                "filePath": "local/templates/general/header.php",
+                "filePath": "/home/bitrix/www/local/templates/general/header.php",
                 "group": "Template"
             },
             {
-                "filePath": "local/templates/general/includes",
+                "filePath": "/home/bitrix/www/local/templates/general/includes",
                 "group": "Template"
             }
         ]

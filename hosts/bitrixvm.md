@@ -32,7 +32,7 @@ localedef ru_RU.UTF-8 -f UTF-8 -i ru_RU
 ```sh
 nano /etc/ssh/sshd_config
 # правим строку PasswordAuthentication no
-systemctl restart ssh
+service sshd restart
 ```
 
 Создание файла для http авторизации: htpasswd -c /etc/nginx/auth.htpasswd user
@@ -48,3 +48,14 @@ Bitrix Push server 2.0 устанавливается через меню Bitrix
 ## Мануал по настройке exim
 
 https://www.acrit-studio.ru/pantry-programmer/knowledge-base/kak-nastroit-bitrixenv-bitrixvm-otsylat-pochtu-napryamuyu-bez-avtorizatsii-na-promezhutochnykh-pocht/
+
+## Включение swap
+
+Swap на 4Gb
+```sh
+dd if=/dev/zero of=/swapfile count=4096 bs=1MiB
+chmod 600 /swapfile
+mkswap /swapfile
+nano /etc/fstab
+```
+Добавляем: /swapfile   swap    swap    sw  0   0
