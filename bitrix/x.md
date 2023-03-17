@@ -87,9 +87,12 @@ if (!defined('APPLICATION_ENV') || APPLICATION_ENV != 'dev') {
 
 ```sh
 git clone https://github.com/Suntechnic/x.git /tmp/x
+
 mv /tmp/x/local/templates local/
 mv /tmp/x/local/php_interface/migrations local/php_interface
 mv /tmp/x/_test/ .
+
+rm -rf /tmp/x
 ```
 
 Добавляем вертску:
