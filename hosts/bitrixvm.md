@@ -16,8 +16,12 @@ mv /etc/php.d/20-phar.ini.disabled /etc/php.d/20-phar.ini
 mv /etc/php.d/20-pdo.ini.disabled /etc/php.d/20-pdo.ini
 mv /etc/php.d/30-pdo_mysql.ini.disabled  /etc/php.d/30-pdo_mysql.ini
 
-#curl
+# curl
 mv /etc/php.d/20-curl.ini.disabled /etc/php.d/20-curl.ini
+
+# xml для миграций
+mv /etc/php.d/30-xmlreader.ini.disabled /etc/php.d/30-xmlreader.ini
+mv /etc/php.d/20-xmlwriter.ini.disabled /etc/php.d/20-xmlwriter.ini
 
 systemctl restart httpd
 ```
