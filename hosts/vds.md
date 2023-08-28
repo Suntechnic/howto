@@ -16,6 +16,15 @@ chown -R web:web /var/www/web/.ssh
 [Инструкция](https://www.netangels.ru/support/cloud-vds/prebuilt/)
 
 
+## Установка битрикс
+
+```sh
+mkdir /var/www/web/sites/mysite.oceansites.ru
+cd /var/www/web/sites/mysite.oceansites.ru/
+wget https://www.1c-bitrix.ru/download/scripts/bitrixsetup.php
+```
+
+
 ## Создание БД
 
 [Инструкция](../mysql/main.md)
