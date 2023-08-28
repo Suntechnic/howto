@@ -1,11 +1,11 @@
 # MySQL
 
+Создание новой БД
 ```sql
-DROP USER user@localhost;
+DROP USER username@localhost;
 DROP DATABASE dbname;
-CREATE USER user@localhost IDENTIFIED BY 'JKhfhryu3yH';
+CREATE USER username@localhost IDENTIFIED BY 'uRfeADdxZTghst3E';
 CREATE DATABASE dbname COLLATE utf8_general_ci;
-GRANT ALL PRIVILEGES ON dbname.* TO 'user'@'localhost'; FLUSH PRIVILEGES;
+GRANT ALL PRIVILEGES ON dbname.* TO 'username'@'localhost'; FLUSH PRIVILEGES;
 quit;
-sql
 ```

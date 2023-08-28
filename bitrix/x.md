@@ -1,13 +1,27 @@
 # X
 
+
+## Получаем шаблоны
+
+В /home/bitrix:
+```sh
+git clone git@github.com:Suntechnic/x.git
+cp x/.gitignore www/
+cp -R x/test www/
+mkdir www/local
+cp -R x/local/php_interface www/local
+cp -R x/local/templates www/local
+```
+
 ## Инициализируем .git
 
-Закидываем gitignore:
 ```
 rm -rf images/
 git init;
 git add --all .;
-git commit -m "first commit";
+git config --global user.email "madzhugin@gmail.com"
+git config --global user.name "Александр Маджугин"
+git commit -m "first commit"; 
 git branch -M main;
 
 git remote add origin тут_адрес_репы
@@ -83,17 +97,6 @@ if (!defined('APPLICATION_ENV') || APPLICATION_ENV != 'dev') {
 }
 ```
 
-## каркас X
-
-```sh
-git clone https://github.com/Suntechnic/x.git /tmp/x
-
-mv /tmp/x/local/templates local/
-mv /tmp/x/local/php_interface/migrations local/php_interface
-mv /tmp/x/_test/ .
-
-rm -rf /tmp/x
-```
 
 Добавляем вертску:
 ```bash

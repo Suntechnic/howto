@@ -12,7 +12,12 @@ npm install -g @bitrix/cli
 yum update
 yum upgrade
 
-# для композер
+# включение mbstring;
+nano /etc/php.d/20-mbstring.ini
+#mbstring.func_overload=2
+#mbstring.internal_encoding=UTF-8
+
+# для работы композера
 mv /etc/php.d/20-phar.ini.disabled /etc/php.d/20-phar.ini
 
 # для pdo
@@ -33,7 +38,7 @@ systemctl restart httpd
 
 ```sh
 localedef ru_RU.UTF-8 -f UTF-8 -i ru_RU
-```pw
+```
 
 Отключаем вход по паролю:
 ```sh
@@ -88,6 +93,46 @@ sendmail_path = /usr/sbin/sendmail -t -i
 service httpd restart
 ```
 
+## htaccess
+
+### включине сжатия
+
+```
+<IfModule mod_deflate.c>
+ # Compress HTML, CSS, JavaScript, Text, XML and fonts
+ AddOutputFilterByType DEFLATE application/json
+ AddOutputFilterByType DEFLATE application/javascript
+ AddOutputFilterByType DEFLATE application/rss+xml
+ AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+ AddOutputFilterByType DEFLATE application/x-font
+ AddOutputFilterByType DEFLATE application/x-font-opentype
+ AddOutputFilterByType DEFLATE application/x-font-otf
+ AddOutputFilterByType DEFLATE application/x-font-truetype
+ AddOutputFilterByType DEFLATE application/x-font-ttf
+ AddOutputFilterByType DEFLATE application/x-javascript
+ AddOutputFilterByType DEFLATE application/xhtml+xml
+ AddOutputFilterByType DEFLATE application/xml
+ AddOutputFilterByType DEFLATE font/opentype
+ AddOutputFilterByType DEFLATE font/otf
+ AddOutputFilterByType DEFLATE font/ttf
+ AddOutputFilterByType DEFLATE image/svg+xml
+ AddOutputFilterByType DEFLATE image/x-icon
+ AddOutputFilterByType DEFLATE text/css
+ AddOutputFilterByType DEFLATE text/html
+ AddOutputFilterByType DEFLATE text/javascript
+ AddOutputFilterByType DEFLATE text/plain
+ AddOutputFilterByType DEFLATE text/xml
+ #The following line is enough for .js and .css
+ AddOutputFilter DEFLATE js css
+ AddOutputFilterByType DEFLATE application/json text/plain text/xml application/xhtml+xml text/css application/javascript application/xml application/rss+xml application/atom_xml application/x-javascript application/x-httpd-php application/x-httpd-fastphp text/html
+</IfModule>
+```
+
+### установить переменную окружения
+
+```
+SetEnv APPLICATION_ENV "dev"
+```
 ## Включение swap
 
 Swap на 4Gb
@@ -113,3 +158,4 @@ nano /etc/sysctl.conf
 sysctl -p
 sysctl --system
 ```
+
