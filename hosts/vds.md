@@ -30,6 +30,15 @@ wget https://www.1c-bitrix.ru/download/scripts/bitrixsetup.php
 [Инструкция](../mysql/main.md)
 
 
+## Изменение параметров PHP
+
+```sh
+nano /etc/php/8.1/cgi/php.ini
+# изменить нужные параметры и выйти
+service apache2 restart
+```
+
+
 ## Включение swap
 
 Swap на 4Gb
