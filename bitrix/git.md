@@ -1,5 +1,23 @@
-# Gitignore для Bitrix
 
+
+## Gitignore 
+```sh
+git config --global user.email "madzhugin@gmail.com"
+git config --global user.name "Александр Маджугин"
+```
+
+## Gitignore для Bitrix в папке /bitrix
+```
+/backup
+/cache
+/managed_cache
+/stack_cache
+/tmp
+/images
+/fonts
+```
+
+## Gitignore для Bitrix
 ```
 #Test 
 /_tools

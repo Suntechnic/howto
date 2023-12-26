@@ -1,5 +1,9 @@
 # Первичная настройка BitrixVm:
 
+```
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnZxKT7fVHA93npUq7gqp7MXOIpq4j570i7U8bVst/srKBTChFOLqPm60Jh41ziVe+bFwqakLROGynvgkkpesAKFggp38OLJx6S0y1keY3ubnecG5Gtu3NpdTBa1SfcuXLQkYrF+K8twbHDPcPOc3ilsI3Qml45eaX0uUcyA2VqvVAknje2cB/5zyVdTn+2yAlTpUyyDlpu0fRTKgANecCO9f62pd4QXPuqmvykdh0md2g7jFQjttUaRO6y3DySGhPng4tox80DyrG87GxL+yrCR2Nvw+SD1Mb9n3940KprD8RoOy/u9DkUUrgzkrY5h7J9AWkNJk36nzA+spi7jpF alex@alex-thinkpad
+```
+
 ```sh
 
 yum install htop nano fish composer nodejs

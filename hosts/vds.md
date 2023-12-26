@@ -4,9 +4,10 @@
 
 ```sh
 # установка
+apt-get install fish htop nodejs npm composer;
 apt-get update;
-apt-get install fish htop nodejs npm;
 apt-get upgrade;
+npm install -g @bitrix/cli
 
 # ssh для web
 cp -R .ssh/ /var/www/web/
@@ -17,6 +18,8 @@ chown -R web:web /var/www/web/.ssh
 
 
 ## Установка битрикс
+
+Пароль БД: ```sh cat /root/.my.cnf ```
 
 ```sh
 mkdir /var/www/web/sites/mysite.oceansites.ru
@@ -43,7 +46,7 @@ service apache2 restart
 
 Swap на 4Gb
 ```sh
-dd if=/dev/zero of=/swapfile count=4096 bs=1MiB
+dd if=/dev/zero of=/swapfile count=2048 bs=1MiB
 chmod 600 /swapfile
 mkswap /swapfile
 nano /etc/fstab
@@ -55,11 +58,18 @@ swapon -a
 
 ## Организация совместной работы на одной площадке (на примере Netangels Ubuntu)
 
+Если не создана группа developers ее сначала нужно создать:
+```sh
+groupadd developers;
+gpasswd -a web developers;
+```
+
 ```sh
 useradd testuser; # создаем пользователя
 gpasswd -a testuser developers # добавляем пользователя в группу разработчиков
 mkdir /home/testuser
 passwd testuser; # устанавливаем пароль
+
 cp -r .ssh /home/testuser/.ssh; # копируем ключи рутов в папку пользователя
 mkdir /home/testuser/web
 cp .profile /home/testuser/.profile

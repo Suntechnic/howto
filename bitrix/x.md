@@ -15,12 +15,14 @@ cp -R x/local/templates www/local
 
 ## Инициализируем .git
 
-```
+```sh
 rm -rf images/
-git init;
-git add --all .;
+
 git config --global user.email "madzhugin@gmail.com"
 git config --global user.name "Александр Маджугин"
+
+git init;
+git add --all .;
 git commit -m "first commit"; 
 git branch -M main;
 
@@ -34,8 +36,8 @@ git push -u origin main
 обавляем xCore:
 ```bash
 git submodule add git@github.com:Suntechnic/xBxx.git local/php_interface/lib/Bxx
+git submodule add https://github.com/Suntechnic/xBxx.git local/php_interface/lib/Bxx
 ```
-Устанавливаем модуль в админке
 
 Закидываем xComponents:
 ```bash
@@ -44,12 +46,22 @@ git submodule add git@github.com:Suntechnic/xComponents.git local/components/x
 
 Закидываем xExtensions:
 ```bash
-git submodule add git@github.com:Suntechnic/xExtensions.git local/js/x
+git submodule add git@github.com:Suntechnic/xExtensions.git local/js/x # https://github.com/Suntechnic/xExtensions.git
+```
+
+Добавляем вертску:
+```bash
+git submodule add тут_репа_верстки local/assets
+```
+
+### обновление сабмодулей:
+```bash
+git submodule foreach 'git pull'
 ```
 
 ## Устанавливаем модули composer
 
-Обязательно редактируем composer.json заменяя Test/test на название проекта.
+Обязательно редактируем composer.json заменяя vendor/project на название проекта.
 
 При необходимости включить от root нужные модулю.
 В битриксVM
@@ -81,7 +93,8 @@ cd -
 ```php
 <?php
 
-if ($_SERVER['APPLICATION_ENV']) {
+if ($_SERVER['APPLICATION_ENV'] || $_SERVER['REDIRECT_APPLICATION_ENV']) {
+    if (!$_SERVER['APPLICATION_ENV']) $_SERVER['APPLICATION_ENV'] = $_SERVER['REDIRECT_APPLICATION_ENV'];
     define('APPLICATION_ENV',$_SERVER['APPLICATION_ENV']);
 } else {
     define('APPLICATION_ENV','production');
@@ -95,13 +108,13 @@ if (!defined('APPLICATION_ENV') || APPLICATION_ENV != 'dev') {
 } else if (defined('APPLICATION_ENV') || APPLICATION_ENV != 'production') {
     define('VUEJS_DEBUG', true);
 }
+
+$DefaultTemplatePath = \Bitrix\Main\Application::getDocumentRoot().'/local/templates/.default';
+define('DEFAULT_TEMPLATE_PATH',$DefaultTemplatePath);
 ```
 
+При этом в .htaccess добавляем *SetEnv APPLICATION_ENV 'dev'*
 
-Добавляем вертску:
-```bash
-git submodule add тут_репа_верстки local/assets
-```
 
 ## Если необходимо изменить параметры загрузки ядра или установить какие-то параметры до загрузки, а так же выполнить обработку, например переключение языков:
 
