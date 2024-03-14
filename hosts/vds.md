@@ -4,7 +4,7 @@
 
 ```sh
 # установка
-apt-get install fish htop nodejs npm composer;
+apt-get install bindfs fish htop nodejs npm composer;
 apt-get update;
 apt-get upgrade;
 npm install -g @bitrix/cli
@@ -12,6 +12,13 @@ npm install -g @bitrix/cli
 # ssh для web
 cp -R .ssh/ /var/www/web/
 chown -R web:web /var/www/web/.ssh
+```
+
+### Установка последний версии node
+```sh
+curl -sL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh
+bash nodesource_setup.sh
+apt install nodejs
 ```
  
 [Инструкция](https://www.netangels.ru/support/cloud-vds/prebuilt/)
@@ -25,6 +32,7 @@ chown -R web:web /var/www/web/.ssh
 mkdir /var/www/web/sites/mysite.oceansites.ru
 cd /var/www/web/sites/mysite.oceansites.ru/
 wget https://www.1c-bitrix.ru/download/scripts/bitrixsetup.php
+wget https://www.1c-bitrix.ru/download/files/scripts/restore.php
 ```
 
 

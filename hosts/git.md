@@ -6,6 +6,11 @@ git config --global user.email "madzhugin@gmail.com"
 git config --global user.name "Александр Маджугин"
 ```
 
+Отменить все незакомиченные изменения
+```sh
+git reset --hard
+```
+
 ## Gitignore для Bitrix в папке /bitrix
 ```
 /backup

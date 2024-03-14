@@ -3,14 +3,14 @@
 
 ## Получаем шаблоны
 
-В /home/bitrix:
+В документрут:
 ```sh
-git clone git@github.com:Suntechnic/x.git
-cp x/.gitignore www/
-cp -R x/test www/
-mkdir www/local
-cp -R x/local/php_interface www/local
-cp -R x/local/templates www/local
+git clone git@github.com:Suntechnic/x.git ../x
+cp ../x/.gitignore ./
+cp -R ../x/test ./
+mkdir ./local
+cp -R ../x/local/php_interface ./local
+cp -R ../x/local/templates ./local
 ```
 
 ## Инициализируем .git
@@ -35,7 +35,7 @@ git push -u origin main
 
 обавляем xCore:
 ```bash
-git submodule add git@github.com:Suntechnic/xBxx.git local/php_interface/lib/Bxx
+# git submodule add git@github.com:Suntechnic/xBxx.git local/php_interface/lib/Bxx
 git submodule add https://github.com/Suntechnic/xBxx.git local/php_interface/lib/Bxx
 ```
 
@@ -46,7 +46,8 @@ git submodule add git@github.com:Suntechnic/xComponents.git local/components/x
 
 Закидываем xExtensions:
 ```bash
-git submodule add git@github.com:Suntechnic/xExtensions.git local/js/x # https://github.com/Suntechnic/xExtensions.git
+#git submodule add git@github.com:Suntechnic/xExtensions.git local/js/x
+git submodule add https://github.com/Suntechnic/xExtensions.git local/js/x
 ```
 
 Добавляем вертску:
@@ -118,15 +119,25 @@ define('DEFAULT_TEMPLATE_PATH',$DefaultTemplatePath);
 
 ## Если необходимо изменить параметры загрузки ядра или установить какие-то параметры до загрузки, а так же выполнить обработку, например переключение языков:
 
-1 В /bitrix добавляем файл .settings_extra.php со следующим содержимым:
-```
-<?return include_once($_SERVER['DOCUMENT_ROOT'].'/local/.settings_extra.php');
+1 В /bitrix добавляем файл .settings_extra.php с инклюдом данных из local:
+```php
+<?
+include_once($_SERVER['DOCUMENT_ROOT'].'/local/.settings_extra.php');
+
+// в ретарн можно дописать собственны параметры, чтобы не смешиваться с говном из /bitrix/.settings.php
+return array (
+        'routing' => [
+                'value' => [
+                        'config' => ['api.php','web.php']
+                    ]
+            ]
+    );
 ```
 
 2 В /local добавляем файл .settings_extra.php с необходимыми действиями.
 Файл должен возвращать массив.
 Например:
-```
+```php
 if ('en.cytamin.123123.ru' == $_SERVER['SERVER_NAME']) {
     define('LANGUAGE_ID','en');
     define('LANG_CHARSET','en');
@@ -134,6 +145,4 @@ if ('en.cytamin.123123.ru' == $_SERVER['SERVER_NAME']) {
     define('LANGUAGE_ID','ru');
     define('LANGUAGE_ID','ru');
 } */
-
-return array ();
 ```
