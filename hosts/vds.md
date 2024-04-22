@@ -26,7 +26,10 @@ apt install nodejs
 
 ## Установка битрикс
 
-Пароль БД: ```sh cat /root/.my.cnf ```
+Пароль БД: 
+```sh 
+cat /root/.my.cnf 
+```
 
 ```sh
 mkdir /var/www/web/sites/mysite.oceansites.ru
@@ -41,7 +44,7 @@ wget https://www.1c-bitrix.ru/download/files/scripts/restore.php
 [Инструкция](../mysql/main.md)
 
 
-## Изменение параметров PHP
+## Изменение параметров и версий PHP
 
 ```sh
 nano /etc/php/8.1/cgi/php.ini
@@ -49,6 +52,22 @@ nano /etc/php/8.1/cgi/php.ini
 service apache2 restart
 ```
 
+### Изменение версии
+
+```sh
+apt install software-properties-common
+add-apt-repository ppa:ondrej/php -y
+apt install php7.4
+apt install php7.4-{cli,common,curl,zip,gd,mysql,xml,mbstring,json,intl}
+update-alternatives --config php
+```
+
+Доустанавливаем apachemod
+```sh
+apt install libapache2-mod-php7.4; # удалить аналогичные пакеты других версий
+a2enmod php7.4
+```
+Не забываем в short_open_tag=On nano /etc/php/7.4/apache2/php.ini
 
 ## Включение swap
 

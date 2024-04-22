@@ -167,3 +167,12 @@ sysctl -p
 sysctl --system
 ```
 
+
+## iptables (открываем 21 порт):
+
+В файл /etc/sysconfig/iptables добавляем
+```
+-A INPUT -p tcp -m tcp --sport 21 -j ACCEPT
+-A INPUT -p tcp -m tcp --sport 20 -j ACCEPT
+-A INPUT -p tcp -m multiport --dports 20,21,49000:55000 -j ACCEPT
+```
