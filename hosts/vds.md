@@ -23,6 +23,17 @@ apt install nodejs
  
 [Инструкция](https://www.netangels.ru/support/cloud-vds/prebuilt/)
 
+## HTTP Auth
+
+Создание файла для http авторизации: htpasswd -c /etc/nginx/auth.htpasswd user
+
+В файл nano /etc/nginx/sites-available/default-proxy добавляем в секцию server:
+```
+    auth_basic "Restricted Access";
+    auth_basic_user_file /etc/nginx/auth.htpasswd;
+```
+
+
 
 ## Установка битрикс
 
@@ -69,6 +80,13 @@ a2enmod php7.4
 ```
 Не забываем в short_open_tag=On nano /etc/php/7.4/apache2/php.ini
 
+### Установка сертификатов
+
+```sh
+apt install certbot python3-certbot-nginx
+certbot --nginx -d mysite.ru
+```
+
 ## Включение swap
 
 Swap на 4Gb
@@ -113,4 +131,16 @@ chown testuser:testuser /home/testuser/web/test.123123.ru
 
 # добавляем в fstab:
 bindfs#/var/www/web/sites/test.123123.ru   /home/testuser/web/test.123123.ru	fuse	create-for-user=web,create-for-group=web,create-with-perms=u+rwD:g=rwD:o-rwx,chmod-filter=o-rwx,perms=u+rwD:g=rwD:o-rwx,mirror=testuser,force-group=developers		0	0
+```
+
+# Установка и настройка Grafana
+
+[Инструкция](https://grafana.com/grafana/download?edition=oss)
+
+```sh
+apt-get install -y adduser libfontconfig1 musl
+wget https://dl.grafana.com/oss/release/grafana_11.0.0_amd64.deb
+dpkg -i grafana_11.0.0_amd64.deb
+
+https://grafana.com/grafana/download?edition=oss
 ```
