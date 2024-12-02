@@ -22,8 +22,8 @@ yum upgrade
 
 # включение mbstring;
 nano /etc/php.d/20-mbstring.ini
-#mbstring.func_overload=2
-#mbstring.internal_encoding=UTF-8
+mbstring.func_overload=2
+mbstring.internal_encoding=UTF-8
 
 # для работы композера
 mv /etc/php.d/20-phar.ini.disabled /etc/php.d/20-phar.ini
@@ -175,4 +175,21 @@ sysctl --system
 -A INPUT -p tcp -m tcp --sport 21 -j ACCEPT
 -A INPUT -p tcp -m tcp --sport 20 -j ACCEPT
 -A INPUT -p tcp -m multiport --dports 20,21,49000:55000 -j ACCEPT
+```
+
+# Замена репозиториев для обновления до PHP 8
+
+Синтаксис bash!
+```sh
+sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/CentOS*
+sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/CentOS*
+sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/CentOS*
+
+```
+
+# Для подключения dbeaver
+
+```sql
+CREATE USER 'bitrix0'@'127.0.0.1' IDENTIFIED BY '__pass__';
+GRANT ALL PRIVILEGES ON sitemanager.* TO 'bitrix0'@'127.0.0.1'; FLUSH PRIVILEGES;
 ```

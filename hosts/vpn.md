@@ -4,7 +4,10 @@
 # установка
 apt-get update;
 apt-get upgrade;
-apt-get install xclip python3-pip ufw wireguard git fish htop micro nano iptables;
+apt-get install ufw git fish htop micro nano iptables fail2ban;
+
+# меняем имя
+micro /etc/hostname
 
 mkdir ~/.ssh; nano ~/.ssh/authorized_keys
 
@@ -12,74 +15,66 @@ mkdir ~/.ssh; nano ~/.ssh/authorized_keys
 ```
 
 настраиваем ssh - порт и отключаем вход по паролю
+```sh
+micro /etc/ssh/sshd_config
+```
 
 ## Настройка безопасности:
 
 ```sh
 ufw allow 3333
+ufw allow 443
+ufw allow 1180
 ufw enable
 ```
 
-## Настройка Wireguard:
+## Настройка dante:
 
-Установка wirefuard:
 ```sh
-# Генерируем ключи сервера:
-wg genkey | tee /etc/wireguard/privatekey | wg pubkey | tee /etc/wireguard/publickey
+apt-get install dante-server
+micro /etc/danted.conf
 
-# Ставим права для приватного ключа:
-chmod 600 /etc/wireguard/privatekey
-
-# узнаем интерфейс:
-ip route list default
-# default via 176.126.113.1 dev eth0 onlink
-# в данном случае это eth0
-
-# Создаем конфигурацию сервера:
-nano /etc/wireguard/wg0.conf
-
-# Вставляем в файл. По умолчанию интерфейс eth0:
-[Interface]
-Address = 10.77.77.1/24 # нyжная подсесть
-Address = fd42:48:48::1/64 # нyжная подсест 6
-PostUp = iptables -A FORWARD -i eth0 -o wg0 -j ACCEPT; iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-PostDown = iptables -D FORWARD -i eth0 -o wg0 -j ACCEPT; iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
-ListenPort = 53516
-PrivateKey = # ключ
-
-
-# Настраиваем IP форвардинг:
-echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf sysctl -p
-# .... и перезагрузить
-
-# разрешаем порт
-ufw allow 53516/udp
-
-# запускаем
-systemctl enable wg-quick@wg0.service
-service wg-quick@wg0 start
 ```
 
-Установка WG-Dashboard
-```sh
-git clone -b v3.1-dev https://github.com/donaldzou/WGDashboard.git wgdashboard
+```
+# Путь к лог файлу
+#logoutput: /socks.log
+# Можно задать отдельный лог файл для ошибок
+#errorlog: /socks_error.log
 
-# Открываем папку
-cd wgdashboard/src
+internal: 0.0.0.0 port=1180
+external: eth0
 
-# Устанавливаем WGDashboard
-chmod u+x wgd.sh
-pip install -r requirements.txt
-./wgd.sh install
+##Тип авторизации
+#Работа без пароля
+#socksmethod: none
+#Авторизация по локальным/системным пользователям (наш случай)
+socksmethod: username
+#Авторизация при помощи логина/пароля, сохраняемого в PAM-файле:
+#socksmethod: pam.username
 
-# Меняем права для папки с конфигом
-chmod -R 755 /etc/wireguard
 
-# Запускаем WGDashboard
-./wgd.sh start
+# Мы используем системных пользователей, поэтому нужны права на чтение passwd
+user.privileged: root
+user.unprivileged: nobody
+user.libwrap: nobody
 
-ufw disable
+# Разрешить подключения с любых IP всем пользователям прошедшим авторизацию
+client pass {
+        from: 0/0 to: 0/0
+        log: connect disconnect error ioop
+}
+
+socks pass {
+        from: 0/0 to: 0/0
+        log: connect disconnect error ioop
+}
+
+
 ```
 
-После заходим в интрефейс на проту 10086 и в настройках изменяем пароль
-
+```sh
+useradd --shell /usr/sbin/nologin proxyuser
+passwd proxyuser
+```
+Пароль 8009_Tango

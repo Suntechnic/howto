@@ -31,8 +31,7 @@ Host github.com-{названиеПроекта}
 ## Откат всех изменений
 
 ```
-git checkout .
-git clean -df
+git checkout .; git clean -df;
 ```
 
 
@@ -69,8 +68,6 @@ git reset --hard
 
 #IDE
 .idea/
-.vscode/
-*.code-workspace
 
 # Exclude files
 /.htaccess
@@ -86,40 +83,11 @@ git reset --hard
 /.svn
 *~
 
-#Bitrix data
+#Bitrix core & data
+#core
+/bitrix
 /upload
 
-# Bitrix Core
-/bitrix
-/bitrix/backup
-/bitrix/cache
-/bitrix/catalog_export
-/bitrix/crontab
-/bitrix/css
-/bitrix/fonts
-/bitrix/gadgets
-/bitrix/image_uploader
-/bitrix/images
-/bitrix/managed_cache
-/bitrix/mobileapp
-/bitrix/pdf
-/bitrix/stack_cache
-/bitrix/tmp
-/bitrix/tools
-/bitrix/themes
-/bitrix/updates
-/bitrix/webdav
-/bitrix/wizards
-/bitrix/sounds
-/bitrix/*site_checker*
-/bitrix/*.setting.php
-/bitrix/.svn
-/bitrix/*.map
-/bitrix/*.min.js
-/bitrix/*.min.css
-/bitrix/catalog_export
-
-# Local data
+#data
 /local/.logs
-
 ```

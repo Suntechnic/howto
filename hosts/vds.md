@@ -133,6 +133,17 @@ chown testuser:testuser /home/testuser/web/test.123123.ru
 bindfs#/var/www/web/sites/test.123123.ru   /home/testuser/web/test.123123.ru	fuse	create-for-user=web,create-for-group=web,create-with-perms=u+rwD:g=rwD:o-rwx,chmod-filter=o-rwx,perms=u+rwD:g=rwD:o-rwx,mirror=testuser,force-group=developers		0	0
 ```
 
+# Удаление пользователя
+Удаляем строки монтирования и перезагружаемся.  
+Далее последовательно: 
+```sh
+passwd -l username
+killall -9 -u username
+deluser --remove-home username
+```
+
+
+
 # Установка и настройка Grafana
 
 [Инструкция](https://grafana.com/grafana/download?edition=oss)

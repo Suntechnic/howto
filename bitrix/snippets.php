@@ -63,3 +63,41 @@ while ($dctFile = $oRes->Fetch()) {
     if (!$dctFile['MODULE_ID']) 
             \CFile::Delete($dctFile['ID']);
 }
+
+
+
+// ловец шаблонов
+
+if (defined('APPLICATION_ENV') && APPLICATION_ENV == 'dev') {
+    $lstFiles = get_included_files();
+    
+    $lstTemplateFiles = array_filter($lstFiles,function ($File) {return !!strpos($File,'/template.php');});
+
+    $lstTemplateFiles = array_map(function ($File) {
+            $lstToken = explode('/',$File);
+            $lstReverseToken = array_reverse($lstToken);
+
+            
+            if ($lstReverseToken[2] == 'lang') {
+                $dctFile = [
+                        'patch' => $File,
+                        'template' => $lstReverseToken[3],
+                        'component' => $lstReverseToken[4],
+                        'lang' => true
+                    ];
+            } else {
+                $dctFile = [
+                        'patch' => $File,
+                        'template' => $lstReverseToken[1],
+                        'component' => $lstReverseToken[2]
+                    ];
+            }
+
+            return $dctFile;
+        }, $lstTemplateFiles);
+
+    foreach ($lstTemplateFiles as $dctFile) { if ($dctFile['lang']) continue;
+        $Template = $dctFile['component'].':'.$dctFile['template'];
+        \Kint\Kint::dump($Template,$dctFile);
+    }
+}
