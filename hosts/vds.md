@@ -4,8 +4,9 @@
 
 ```sh
 # установка
-apt-get install bindfs fish htop nodejs npm composer;
 apt-get update;
+apt-get install screen fish htop micro;
+apt-get install bindfs nodejs npm composer;
 apt-get upgrade;
 npm install -g @bitrix/cli
 
@@ -57,7 +58,7 @@ wget https://www.1c-bitrix.ru/download/files/scripts/restore.php
 
 ## Изменение параметров и версий PHP
 
-```sh
+```shf
 nano /etc/php/8.1/cgi/php.ini
 # изменить нужные параметры и выйти
 service apache2 restart
@@ -75,7 +76,8 @@ update-alternatives --config php
 
 Доустанавливаем apachemod
 ```sh
-apt install libapache2-mod-php7.4; # удалить аналогичные пакеты других версий
+apt install libapache2-mod-php7.4; 
+# перед этим нужно отключить другие модуля, например a2dismod php8.0
 a2enmod php7.4
 ```
 Не забываем в short_open_tag=On nano /etc/php/7.4/apache2/php.ini
@@ -126,11 +128,11 @@ chown -R testuser:testuser /home/testuser; # передаем права на п
 
 Чтобы выдать права пользоваетлю на проект - создаем точку монтирования и монтируем проект
 ```sh
-mkdir /home/testuser/web/test.123123.ru # создаем папку проекта и накидываем права
-chown testuser:testuser /home/testuser/web/test.123123.ru
+mkdir /home/testuser/web/store123.oceansites.ru # создаем папку проекта и накидываем права
+chown testuser:testuser /home/testuser/web/store123.oceansites.ru
 
 # добавляем в fstab:
-bindfs#/var/www/web/sites/test.123123.ru   /home/testuser/web/test.123123.ru	fuse	create-for-user=web,create-for-group=web,create-with-perms=u+rwD:g=rwD:o-rwx,chmod-filter=o-rwx,perms=u+rwD:g=rwD:o-rwx,mirror=testuser,force-group=developers		0	0
+bindfs#/var/www/web/sites/store123.oceansites.ru   /home/testuser/web/store123.oceansites.ru	fuse	create-for-user=web,create-for-group=web,create-with-perms=u+rwD:g=rwD:o-rwx,chmod-filter=o-rwx,perms=u+rwD:g=rwD:o-rwx,mirror=testuser,force-group=developers		0	0
 ```
 
 # Удаление пользователя
@@ -142,6 +144,41 @@ killall -9 -u username
 deluser --remove-home username
 ```
 
+
+# Синхронизация площадок
+```sh
+ssh <ПродПользователь>@<ПродАдрес> mysqldump -u <ПользовательБДПрода> -p<Пароль> <ПродБД> > dump.sql
+mysql -u dev -p<Пароль> -e 'DROP DATABASE <ТестБд>;'
+mysql -u dev -p<Пароль> -e 'CREATE DATABASE <ТестБд> COLLATE utf8_general_ci;'
+mysql -u dev -p<Пароль> -e 'GRANT ALL PRIVILEGES ON <ТестБд>.* TO 'dev'@'localhost'; FLUSH PRIVILEGES;'
+mysql -u dev -p<Пароль> <ТестБд> < dump.sql
+rm dump.sql
+
+# для переноса папок через scp
+rm -rf upload
+scp -r <ПродПользователь>@<ПродАдрес>:~/sites/<ПродАдрес>/upload upload
+
+mv bitrix bitrix_old
+scp -r <ПродПользователь>@<ПродАдрес>:~/sites/<ПродАдрес>/bitrix bitrix
+cp bitrix_old/.settings.php bitrix/.settings.php
+rm -rf bitrix_old
+
+```
+
+## Перенос через архив  
+Команды на проде (Закомментированные копии для fish):  
+```sh
+# tar -zcvf upload_x_(date +%Y-%m-%d).tar.gz upload
+tar -zcvf upload_x_$(date +%Y-%m-%d).tar.gz upload
+
+# tar -zcvf bitrix_x_(date +%Y-%m-%d).tar.gz bitrix
+tar -zcvf bitrix_x_$(date +%Y-%m-%d).tar.gz bitrix
+```
+
+Команды на тесте (Закомментированные копии для fish):  
+```sh
+
+```
 
 
 # Установка и настройка Grafana

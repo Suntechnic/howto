@@ -1,31 +1,34 @@
-## Команды для полного удаления git сабмодуля:
+## Удаление git подмодуля (submodule)
 
-Удалить секцию модуля из .gitmodules
-Выполнить команду git add .gitmodules
-Удалить модуль из .git/config
-Выполнить команду git rm -rf --cached path_to_submodule чтобы удалить директорию из индекса
-Выполнить команду rm -rf .git/modules/path_to_submodule
-Выполнить коммит git commit -m "Removed submodule <name>"
-Выполнить команду rm -rf path_to_submodule чтобы удалить "неотслеживаемые" файлы подмодуля
+```bash
+# Удаляем подмодуль
+git submodule deinit -f path/to/submodule
+git rm -f path/to/submodule
+git commit -m "Removed submodule path/to/submodule"
+
+# Удаляем директорию из .git/modules (опционально)
+rm -rf .git/modules/path/to/submodule
+```
 
 ## Персональные ключи деплоя
 
-Генерируем ключи, с разными именаме вида id_rsa_{названиеПроекта}
+Генерируем ключи, с разными именаме вида id_rsa-{названиеПроекта}
 
-Создаем файл .ssh/config вида:
+Создаем файл ~/.ssh/config вида:
 ```
 Host github.com-{названиеПроекта}
         Hostname github.com
         IdentityFile=/home/bitrix/.ssh/id_rsa-{названиеПроекта}
 Host github.com-{названиеПроекта}
         Hostname github.com
-        IdentityFile=/home/bitrix/.ssh/id_rsa-{названиеПроекта}
-Host github.com-{названиеПроекта}
-        Hostname github.com
-        IdentityFile=/home/bitrix/.ssh/id_rsa-{названиеПроекта}
+        IdentityFile=/var/www/web/.ssh/id_rsa-{названиеПроекта}
 ```
 
 Не забыть chmod g-w ~/.ssh/config
+
+Далее для нужного сабмодуля выполняем команду:
+git config submodule.{путьКподмодулю}.url git@github.com-{названиеПроекта}:{владелец}/{проект}.git  
+К примеру: git config submodule.local/assets.url git@github.com-assets:aseven77/dsrvd.git для подмодуля local/assets и репозитория git@github.com:aseven77/dsrvd.git
 
 
 ## Откат всех изменений

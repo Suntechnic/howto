@@ -25,6 +25,11 @@ UPDATE b_sale_discount_coupon SET DISCOUNT_ID=269 WHERE DISCOUNT_ID=270;
 UPDATE b_iblock_element_property SET IBLOCK_PROPERTY_ID=580 WHERE IBLOCK_PROPERTY_ID=106;
 ```
 
+Про
+```sql
+UPDATE b_iblock_element_property SET IBLOCK_PROPERTY_ID=580 WHERE IBLOCK_PROPERTY_ID=106;
+```
+
 # Параметры сервера для bitrix
 
 ```
@@ -35,4 +40,16 @@ innodb_flush_method = O_DIRECT
 thread_cache_size = 4
 ```
 
-# Поиск строки в БД
+# Ошибки в кодировке таблиц
+
+Для начала сгенерируем запросы на исправления:  
+Тут вместо ИмяБазы должно быть имя базы, а вместо utf8mb4_general_ci - {ПроблемнаяКодировка}_general_ci
+```sql
+SELECT CONCAT('ALTER TABLE `', t.`TABLE_SCHEMA`, '`.`', t.`TABLE_NAME`, '` CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;') as sqlcode
+FROM `information_schema`.`TABLES` t
+WHERE 1
+AND t.`TABLE_SCHEMA` = 'ИмяБазы'
+AND t.`TABLE_COLLATION` = 'utf8mb4_general_ci'
+ORDER BY 1
+```
+Далее выполняем сгенерированные запросы

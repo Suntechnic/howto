@@ -13,7 +13,7 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnZxKT7fVHA93npUq7gqp7MXOIpq4j570i7U8bVst/
 cp -R .ssh /home/bitrix/
 chown -R bitrix:bitrix /home/bitrix/.ssh
 
-yum install htop nano fish composer nodejs
+yum install htop nano fish composer screen nodejs
 
 npm install -g @bitrix/cli
 
