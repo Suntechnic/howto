@@ -160,7 +160,8 @@ else
     PROMPT_SYMBOL='%F{cyan}❯%f'
 fi
 
-PROMPT='%F${PROMPT_IDENTITY} %F{blue}%~%f${vcs_info_msg_0_}
+PROMPT='
+${PROMPT_IDENTITY} %F{blue}%~%f${vcs_info_msg_0_}
 %(?..%F{red}↳ %?%f )${PROMPT_SYMBOL} '
 
 RPROMPT='%F{242}%D{%H:%M}%f'
