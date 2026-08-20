@@ -9,9 +9,28 @@ lstZshPluginNames=(
     zsh-syntax-highlighting
 )
 
+zsh-plugin-clone () {
+    local PluginName="$1"
+    local PluginDir="$ZSH_PLUGINS_DIR/$PluginName"
+
+    print -n -P "%F{yellow}↻ zsh:%f установка %F{cyan}$PluginName%f... "
+
+    if git clone --depth 1 \
+        "https://github.com/zsh-users/$PluginName.git" \
+        "$PluginDir"; then
+        print -P "%F{green}готово%f"
+
+        return 0
+    fi
+
+    print -P "%F{red}ошибка%f"
+
+    return 1
+}
+
 zsh-plugin-update () {
-    local PluginDir="$1"
-    local PluginName="${PluginDir:t}"
+    local PluginName="$1"
+    local PluginDir="$ZSH_PLUGINS_DIR/$PluginName"
     local UpdateOutput
     local ExitCode
 
@@ -22,12 +41,16 @@ zsh-plugin-update () {
         print -u2 -P "%F{red}✗ zsh:%f не удалось обновить %F{yellow}$PluginName%f"
         print -u2 -- "$UpdateOutput"
 
-        return
+        return 1
     fi
 
-    if [[ "$UpdateOutput" != *'Already up to date.'* ]]; then
+    if [[ "$UpdateOutput" == *'Already up to date.'* ]]; then
+        print -P "%F{242}· zsh:%f $PluginName — актуален"
+    else
         print -P "%F{green}✓ zsh:%f обновлён %F{cyan}$PluginName%f"
     fi
+
+    return 0
 }
 
 mkdir -p "$ZSH_PLUGINS_DIR" "${ZSH_PLUGINS_UPDATE_FILE:h}"
@@ -35,29 +58,21 @@ mkdir -p "$ZSH_PLUGINS_DIR" "${ZSH_PLUGINS_UPDATE_FILE:h}"
 for PluginName in "${lstZshPluginNames[@]}"; do
     PluginDir="$ZSH_PLUGINS_DIR/$PluginName"
 
-    if [[ -d "$PluginDir/.git" ]]; then
-        continue
-    fi
-
-    print -n -P "%F{yellow}↻ zsh:%f установка %F{cyan}$PluginName%f... "
-
-    if git clone --depth 1 \
-        "https://github.com/zsh-users/$PluginName.git" \
-        "$PluginDir" >/dev/null 2>&1; then
-        print -P "%F{green}готово%f"
-    else
-        print -P "%F{red}ошибка%f"
+    if [[ ! -d "$PluginDir/.git" ]]; then
+        zsh-plugin-clone "$PluginName"
     fi
 done
 
 if [[ ! -f "$ZSH_PLUGINS_UPDATE_FILE" ]] || \
-    (( $(date +%s) - $(stat -c %Y "$ZSH_PLUGINS_UPDATE_FILE") > ZSH_PLUGINS_UPDATE_INTERVAL )); then
+    (( $(date +%s) - $(stat -c %Y "$ZSH_PLUGINS_UPDATE_FILE") >= ZSH_PLUGINS_UPDATE_INTERVAL )); then
+
+    print -P "%F{yellow}↻ zsh:%f проверка обновлений плагинов"
 
     for PluginName in "${lstZshPluginNames[@]}"; do
         PluginDir="$ZSH_PLUGINS_DIR/$PluginName"
 
         if [[ -d "$PluginDir/.git" ]]; then
-            zsh-plugin-update "$PluginDir" &!
+            zsh-plugin-update "$PluginName"
         fi
     done
 
