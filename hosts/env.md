@@ -34,8 +34,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.config/zsh/plu
 Добавьте в `~/.zshrc` настройки содержимое [файла](files/.zshrc) и перезапустите zsh:
 
 ```bash
-wget https://raw.githubusercontent.com/Suntechnic/howto/refs/heads/main/hosts/files/.zshrc -O ~/.zshrc
-source ~/.zshrc
+wget https://raw.githubusercontent.com/Suntechnic/howto/refs/heads/main/hosts/files/.zshrc -O ~/.zshrc; source ~/.zshrc
 ```
 
 ## 3. Установить GitHub Copilot CLI

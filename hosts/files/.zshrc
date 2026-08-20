@@ -67,16 +67,21 @@ if [[ ! -f "$ZSH_PLUGINS_UPDATE_FILE" ]] || \
     (( $(date +%s) - $(stat -c %Y "$ZSH_PLUGINS_UPDATE_FILE") >= ZSH_PLUGINS_UPDATE_INTERVAL )); then
 
     print -P "%F{yellow}↻ zsh:%f проверка обновлений плагинов"
+    UpdateFailed=0
 
     for PluginName in "${lstZshPluginNames[@]}"; do
         PluginDir="$ZSH_PLUGINS_DIR/$PluginName"
 
         if [[ -d "$PluginDir/.git" ]]; then
-            zsh-plugin-update "$PluginName"
+            zsh-plugin-update "$PluginName" || UpdateFailed=1
         fi
     done
 
-    touch "$ZSH_PLUGINS_UPDATE_FILE"
+    if (( ! UpdateFailed )); then
+        touch "$ZSH_PLUGINS_UPDATE_FILE"
+    else
+        print -u2 -P "%F{yellow}⚠ zsh:%f marker обновлений не обновлён из-за ошибки"
+    fi
 fi
 
 
@@ -110,8 +115,12 @@ zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
 zstyle ':completion:*:warnings' format '%F{red}Нет совпадений%f'
 
 # Fish-подобные серые подсказки
-source ~/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+if [[ -r "$ZSH_PLUGINS_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
+    source "$ZSH_PLUGINS_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+else
+    print -u2 -P "%F{yellow}⚠ zsh:%f плагин zsh-autosuggestions недоступен"
+fi
 
 # Ctrl+F принимает подсказку целиком, → — следующий символ
 bindkey '^F' autosuggest-accept
@@ -149,7 +158,11 @@ PROMPT='%F{green}%n@%m%f %F{blue}%~%f${vcs_info_msg_0_}
 RPROMPT='%F{242}%D{%H:%M}%f'
 
 # Подсветка синтаксиса: всегда последней
-source ~/.config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if [[ -r "$ZSH_PLUGINS_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
+    source "$ZSH_PLUGINS_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+else
+    print -u2 -P "%F{yellow}⚠ zsh:%f плагин zsh-syntax-highlighting недоступен"
+fi
 
 export PATH="$HOME/.local/bin:$PATH"
 
@@ -173,7 +186,7 @@ copilot () {
     )
 }
 
-# Обновление конфигурации zsh
+# Обновление конфигурации zsh из GitHub
 zsh-update () {
     local ConfigUrl='https://raw.githubusercontent.com/Suntechnic/howto/refs/heads/main/hosts/files/.zshrc'
     local TempFile
