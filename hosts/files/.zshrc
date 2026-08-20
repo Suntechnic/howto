@@ -152,8 +152,16 @@ precmd () {
     vcs_info
 }
 
-PROMPT='%F{green}%n@%m%f %F{blue}%~%f${vcs_info_msg_0_}
-%(?..%F{red}↳ %?%f )%F{cyan}❯%f '
+if (( EUID == 0 )); then
+    PROMPT_IDENTITY='%F{red}%n@%m%f'
+    PROMPT_SYMBOL='%F{red}❯%f'
+else
+    PROMPT_IDENTITY='%F{green}%n@%m%f'
+    PROMPT_SYMBOL='%F{cyan}❯%f'
+fi
+
+PROMPT='${PROMPT_IDENTITY} %F{blue}%~%f${vcs_info_msg_0_}
+%(?..%F{red}↳ %?%f )${PROMPT_SYMBOL} '
 
 RPROMPT='%F{242}%D{%H:%M}%f'
 
@@ -164,10 +172,8 @@ else
     print -u2 -P "%F{yellow}⚠ zsh:%f плагин zsh-syntax-highlighting недоступен"
 fi
 
+
 export PATH="$HOME/.local/bin:$PATH"
-
-
-
 
 # GitHub Copilot CLI
 COPILOT_PROXY_ENV_FILE="$HOME/.vscode-server-insiders/server-env-setup"
