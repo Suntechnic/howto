@@ -3,13 +3,6 @@
 ## Для Ubuntu+LAMP NetAngels
 
 ```sh
-# установка
-apt-get update;
-apt-get install screen fish htop micro;
-apt-get install bindfs nodejs npm composer;
-apt-get upgrade;
-npm install -g @bitrix/cli
-
 # ssh для web
 cp -R .ssh/ /var/www/web/
 chown -R web:web /var/www/web/.ssh

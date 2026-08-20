@@ -1,60 +1,103 @@
-# Типичный воркспейс проекта
+# Блок настроек для root  
 
 ```json
-{
-    "folders": [
-        {
-            "name": "documentroot: разработка",
-            "uri": "vscode-remote://ssh-remote+derevo/home/bitrix/www"
+    {
+
+        "files.exclude": {
+            "**/proc/**": true,
+            "**/lost+found/**": true
         },
-        {
-            "name": "Общие заметки",
-            "path": "/home/alex/projects/howto"
-        }
-    ],
-    "remoteAuthority": "ssh-remote+derevo",
-    "settings": {
+        "search.exclude": {
+            "**/proc/**": true,
+            "**/sys/**": true,
+            "**/dev/**": true,
+            "**/run/**": true,
+            "**/var/tmp/**": true,
+            "**/tmp/**": true
+        },
+        "files.watcherExclude": {
+            "**/proc/**": true,
+            "**/sys/**": true,
+            "**/dev/**": true,
+            "**/run/**": true,
+            "**/var/tmp/**": true,
+            "**/tmp/**": true,
+            "**/var/cache/**": true
+        },
+        "search.followSymlinks": false,
+        "php.suggest.basic": false,
+        "git.enabled": false,
+        "remote.extensionKind": {
+            "GitHub.copilot": [
+                "ui"
+            ],
+            "GitHub.copilot-chat": [
+                "ui"
+            ]
+        },
+
         "workbench.colorCustomizations": {
             "activityBar.background": "#4FA600", // бэкграунд панели
             "activityBar.inactiveForeground": "#fff", // фореграунд панели
             "activityBar.activeBackground": "#fff", // бэкграунд активной кнопки
             "activityBar.foreground": "#E30613", // фореграунд активной кнопки и при наведении
         },
-        "favorites.groups": [
-            "Default",
-            "Template"
-        ],
-        "favorites.currentGroup": "Template",
-        "favorites.resources": [
-            {
-                "filePath": "/home/bitrix/www/bitrix",
-                "group": "Default"
-            },
-            {
-                "filePath": "/home/bitrix/www/bitrix/.settings.php",
-                "group": "Default"
-            },
-            {
-                "filePath": "/home/bitrix/www/bitrix/php_interface/dbconn.php",
-                "group": "Default"
-            },
-            {
-                "filePath": "local",
-                "group": "Default"
-            },
-            {
-                "filePath": "/home/bitrix/www/local/templates/general/footer.php",
-                "group": "Template"
-            },
-            {
-                "filePath": "/home/bitrix/www/local/templates/general/header.php",
-                "group": "Template"
-            },
-            {
-                "filePath": "/home/bitrix/www/local/templates/general/includes",
-                "group": "Template"
-            }
-        ]
     }
-}
+```
+
+
+# Блок настроек для проекта на битрикс
+
+```json
+    {
+
+        "files.exclude": {
+            "**/bitrix/cache/**": true,
+            "**/bitrix/managed_cache/**": true,
+            "**/bitrix/stack_cache/**": true,
+            "**/bitrix/updates/**": true,
+            "**/bitrix/tmp/**": true
+        },
+        "search.exclude": {
+            "**/upload/**": true,
+            "**/bitrix/cache/**": true,
+            "**/bitrix/managed_cache/**": true,
+            "**/bitrix/stack_cache/**": true,
+            "**/bitrix/updates/**": true,
+            "**/bitrix/tmp/**": true
+        },
+        "files.watcherExclude": {
+            "**/upload/**": true,
+            "**/bitrix/cache/**": true,
+            "**/bitrix/managed_cache/**": true,
+            "**/bitrix/stack_cache/**": true,
+            "**/bitrix/updates/**": true,
+            "**/bitrix/tmp/**": true
+        },
+        "intelephense.environment.includePaths": [
+            "${workspaceFolder}/bitrix/modules",
+            "${workspaceFolder}/local"
+        ],
+        "intelephense.files.exclude": [
+            "**/local/assets/**",
+            "**/local/html/**",
+            "**/local/.logs/**",
+            "**/local/.README/**"
+        ],
+        "remote.extensionKind": {
+            "GitHub.copilot": [
+                "ui"
+            ],
+            "GitHub.copilot-chat": [
+                "ui"
+            ]
+        },
+
+        "workbench.colorCustomizations": {
+            "activityBar.background": "#4FA600", // бэкграунд панели
+            "activityBar.inactiveForeground": "#fff", // фореграунд панели
+            "activityBar.activeBackground": "#fff", // бэкграунд активной кнопки
+            "activityBar.foreground": "#E30613", // фореграунд активной кнопки и при наведении
+        },
+    }
 ```

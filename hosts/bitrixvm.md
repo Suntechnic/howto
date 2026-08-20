@@ -26,7 +26,7 @@ mbstring.func_overload=2
 mbstring.internal_encoding=UTF-8
 
 # для работы композера
-mv /etc/php.d/20-phar.ini.disabled /etc/php.d/20-phar.ini
+mv -f /etc/php.d/20-phar.ini.disabled /etc/php.d/20-phar.ini
 
 # для pdo
 mv /etc/php.d/20-pdo.ini.disabled /etc/php.d/20-pdo.ini
@@ -36,8 +36,8 @@ mv /etc/php.d/30-pdo_mysql.ini.disabled  /etc/php.d/30-pdo_mysql.ini
 mv /etc/php.d/20-curl.ini.disabled /etc/php.d/20-curl.ini
 
 # xml для миграций
-mv /etc/php.d/30-xmlreader.ini.disabled /etc/php.d/30-xmlreader.ini
-mv /etc/php.d/20-xmlwriter.ini.disabled /etc/php.d/20-xmlwriter.ini
+mv -f /etc/php.d/30-xmlreader.ini.disabled /etc/php.d/30-xmlreader.ini
+mv -f /etc/php.d/20-xmlwriter.ini.disabled /etc/php.d/20-xmlwriter.ini
 
 systemctl restart httpd
 ```
@@ -61,6 +61,18 @@ service sshd restart
 ```
     auth_basic "Restricted Access";
     auth_basic_user_file /etc/nginx/auth.htpasswd;
+```
+
+Если надо закрыть только опредленные пути:
+```
+    location /local/.logs {
+       auth_basic "Restricted Access";
+       auth_basic_user_file /etc/nginx/passwords/htpasswd;
+    }
+    location /local/.README {
+       auth_basic "Restricted Access";
+       auth_basic_user_file /etc/nginx/passwords/htpasswd;
+    }
 ```
 
 Bitrix Push server 2.0 устанавливается через меню BitrixVM: 9. Configure Push/RTC service for the pool
@@ -100,6 +112,27 @@ sendmail_path = /usr/sbin/sendmail -t -i
 ```sh
 service httpd restart
 ```
+
+## Добавление логов
+
+Монтирование папок: /var/log/httpd, /var/log/nginx, /var/log/php, /var/lib/mysql в домашнюю директорию bitrix для удобного просмотра логов пользователем bitrix
+
+```sh
+mkdir ~/log
+mkdir ~/log/httpd
+mkdir ~/log/nginx
+mkdir ~/log/php
+mkdir ~/log/mysql
+```
+
+В /etc/fstab добавляем:
+```sh
+bindfs#/var/log/httpd /home/bitrix/log/httpd 	fuse	perms=u=rD:g=D:o-rwx,mirror=bitrix,force-group=bitrix		0	0
+bindfs#/var/log/nginx /home/bitrix/log/nginx 	fuse	perms=u=rD:g=D:o-rwx,mirror=bitrix,force-group=bitrix		0	0
+bindfs#/var/log/php /home/bitrix/log/php 	fuse	perms=u=rD:g=D:o-rwx,mirror=bitrix,force-group=bitrix        0	0
+bindfs#/var/lib/mysql /home/bitrix/log/mysql 	fuse	perms=u=rD:g=D:o-rwx,mirror=bitrix,force-group=bitrix        0	0
+```
+
 
 ## htaccess
 

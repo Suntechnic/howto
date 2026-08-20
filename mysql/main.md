@@ -20,6 +20,15 @@ SELECT * FROM b_sale_discount_coupon WHERE DISCOUNT_ID=232;
 UPDATE b_sale_discount_coupon SET DISCOUNT_ID=269 WHERE DISCOUNT_ID=270;
 ```
 
+Пример добавления купонов
+```sql
+INSERT INTO b_sale_discount_coupon (DISCOUNT_ID, TYPE, ACTIVE, MAX_USE, USE_COUNT, USER_ID, COUPON) VALUES
+(351, 4, 'Y', 0, 0, 0, 'PAN001'),
+(351, 4, 'Y', 0, 0, 0, 'PAN003'),
+(351, 4, 'Y', 0, 0, 0, 'PAN009'),
+(351, 4, 'Y', 0, 0, 0, 'PAN016');
+```
+
 Перенос значения свойств
 ```sql
 UPDATE b_iblock_element_property SET IBLOCK_PROPERTY_ID=580 WHERE IBLOCK_PROPERTY_ID=106;
