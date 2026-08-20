@@ -34,7 +34,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.config/zsh/plu
 Добавьте в `~/.zshrc` настройки содержимое [файла](files/.zshrc) и перезапустите zsh:
 
 ```bash
-wget https://raw.githubusercontent.com/bitrix-expert/bitrix-env/main/files/.zshrc -O ~/.zshrc
+wget https://raw.githubusercontent.com/Suntechnic/howto/refs/heads/main/hosts/files/.zshrc -O ~/.zshrc
 source ~/.zshrc
 ```
 

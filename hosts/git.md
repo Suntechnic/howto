@@ -42,8 +42,8 @@ git checkout .; git clean -df;
 ## Конфигурация 
 
 ```sh
-git config --global user.email "madzhugin@gmail.com"
-git config --global user.name "Александр Маджугин"
+git config --global user.email "email@gmail.com"
+git config --global user.name "Разработчик"
 ```
 
 Отменить все незакомиченные изменения
