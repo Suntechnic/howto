@@ -156,9 +156,8 @@ export PATH="$HOME/.local/bin:$PATH"
 
 
 
-
+# GitHub Copilot CLI
 COPILOT_PROXY_ENV_FILE="$HOME/.vscode-server-insiders/server-env-setup"
-
 copilot () {
     if [[ ! -r "$COPILOT_PROXY_ENV_FILE" ]]; then
         print -u2 -P \
@@ -172,4 +171,43 @@ copilot () {
 
         command copilot "$@"
     )
+}
+
+# Обновление конфигурации zsh
+zsh-update () {
+    local ConfigUrl='https://raw.githubusercontent.com/Suntechnic/howto/refs/heads/main/hosts/files/.zshrc'
+    local TempFile
+    local BackupFile="$HOME/.zshrc.bak"
+
+    TempFile="$(mktemp "${TMPDIR:-/tmp}/zshrc.XXXXXX")" || return 1
+
+    if ! curl --fail --silent --show-error --location \
+        "$ConfigUrl" \
+        --output "$TempFile"; then
+        print -u2 -P "%F{red}✗ zsh:%f не удалось скачать конфигурацию"
+        rm -f "$TempFile"
+
+        return 1
+    fi
+
+    if ! zsh -n "$TempFile"; then
+        print -u2 -P "%F{red}✗ zsh:%f синтаксическая ошибка в скачанном .zshrc"
+        rm -f "$TempFile"
+
+        return 1
+    fi
+
+    cp "$HOME/.zshrc" "$BackupFile" || {
+        print -u2 -P "%F{red}✗ zsh:%f не удалось создать резервную копию"
+        rm -f "$TempFile"
+
+        return 1
+    }
+
+    mv "$TempFile" "$HOME/.zshrc"
+
+    print -P "%F{green}✓ zsh:%f конфигурация обновлена"
+    print -P "%F{242}Резервная копия:%f $BackupFile"
+
+    source "$HOME/.zshrc"
 }
