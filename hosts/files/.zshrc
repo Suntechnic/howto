@@ -6,6 +6,7 @@ ZSH_PLUGINS_UPDATE_INTERVAL=604800
 typeset -a lstZshPluginNames
 lstZshPluginNames=(
     zsh-autosuggestions
+    zsh-history-substring-search
     zsh-syntax-highlighting
 )
 
@@ -126,19 +127,19 @@ fi
 bindkey '^F' autosuggest-accept
 bindkey "${terminfo[kcuf1]}" forward-char
 
-# История по введённому префиксу: ↑ / ↓
-autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
-zle -N up-line-or-beginning-search
-zle -N down-line-or-beginning-search
+# Поиск истории по любому фрагменту, как в fish
+source "$ZSH_PLUGINS_DIR/zsh-history-substring-search/zsh-history-substring-search.zsh"
 
-bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
-bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
+HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 
-# Fallback для терминалов, которые не передают terminfo-коды
-bindkey '^[[A' up-line-or-beginning-search
-bindkey '^[[B' down-line-or-beginning-search
-bindkey '\eOA' up-line-or-beginning-search
-bindkey '\eOB' down-line-or-beginning-search
+bindkey "${terminfo[kcuu1]}" history-substring-search-up
+bindkey "${terminfo[kcud1]}" history-substring-search-down
+
+# Fallback для SSH, tmux и терминалов без подходящего terminfo
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey '\eOA' history-substring-search-up
+bindkey '\eOB' history-substring-search-down
 
 # Prompt
 autoload -Uz colors vcs_info
