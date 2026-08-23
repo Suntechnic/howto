@@ -10,6 +10,22 @@ lstZshPluginNames=(
     zsh-syntax-highlighting
 )
 
+typeset -A refZshPluginEntryFiles
+refZshPluginEntryFiles=(
+    zsh-autosuggestions 'zsh-autosuggestions.zsh'
+    zsh-history-substring-search 'zsh-history-substring-search.zsh'
+    zsh-syntax-highlighting 'zsh-syntax-highlighting.zsh'
+)
+
+zsh-plugin-is-installed () {
+    local PluginName="$1"
+    local PluginDir="$ZSH_PLUGINS_DIR/$PluginName"
+    local PluginEntryFile="${refZshPluginEntryFiles[$PluginName]}"
+
+    [[ -d "$PluginDir/.git" ]] && \
+        [[ -r "$PluginDir/$PluginEntryFile" ]]
+}
+
 zsh-plugin-clone () {
     local PluginName="$1"
     local PluginDir="$ZSH_PLUGINS_DIR/$PluginName"
@@ -59,9 +75,16 @@ mkdir -p "$ZSH_PLUGINS_DIR" "${ZSH_PLUGINS_UPDATE_FILE:h}"
 for PluginName in "${lstZshPluginNames[@]}"; do
     PluginDir="$ZSH_PLUGINS_DIR/$PluginName"
 
-    if [[ ! -d "$PluginDir/.git" ]]; then
-        zsh-plugin-clone "$PluginName"
+    if zsh-plugin-is-installed "$PluginName"; then
+        continue
     fi
+
+    if [[ -e "$PluginDir" ]]; then
+        print -P "%F{yellow}⚠ zsh:%f повреждённый плагин %F{cyan}$PluginName%f будет установлен повторно"
+        rm -rf "$PluginDir"
+    fi
+
+    zsh-plugin-clone "$PluginName"
 done
 
 if [[ ! -f "$ZSH_PLUGINS_UPDATE_FILE" ]] || \
