@@ -288,4 +288,14 @@ zsh-update () {
     print -P "%F{242}Резервная копия:%f $BackupFile"
 
     source "$HOME/.zshrc"
+
+    if ! zsh-plugins-update; then
+        print -u2 -P "%F{yellow}⚠ zsh:%f конфигурация обновлена, но плагины обновились с ошибками"
+
+        return 1
+    fi
+
+    print -P "%F{green}✓ zsh:%f конфигурация и плагины обновлены"
+
+    exec zsh
 }
