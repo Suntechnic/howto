@@ -33,7 +33,8 @@ zsh-plugin-clone () {
     print -n -P "%F{yellow}↻ zsh:%f установка %F{cyan}$PluginName%f... "
 
     if GIT_TERMINAL_PROMPT=0 \
-        git clone --depth 1 \
+        git -c http.version=HTTP/1.1 \
+            clone --depth 1 \
             "https://github.com/zsh-users/$PluginName.git" \
             "$PluginDir"; then
         print -P "%F{green}готово%f"
@@ -54,7 +55,8 @@ zsh-plugin-update () {
 
     UpdateOutput="$(
         GIT_TERMINAL_PROMPT=0 \
-        git -C "$PluginDir" pull --ff-only --quiet 2>&1
+        git -c http.version=HTTP/1.1 \
+            -C "$PluginDir" pull --ff-only --quiet 2>&1
     )"
     ExitCode=$?
 
