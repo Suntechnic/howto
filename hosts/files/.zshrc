@@ -32,9 +32,10 @@ zsh-plugin-clone () {
 
     print -n -P "%F{yellow}↻ zsh:%f установка %F{cyan}$PluginName%f... "
 
-    if git clone --depth 1 \
-        "https://github.com/zsh-users/$PluginName.git" \
-        "$PluginDir"; then
+    if GIT_TERMINAL_PROMPT=0 \
+        git clone --depth 1 \
+            "https://github.com/zsh-users/$PluginName.git" \
+            "$PluginDir"; then
         print -P "%F{green}готово%f"
 
         return 0
@@ -51,7 +52,10 @@ zsh-plugin-update () {
     local UpdateOutput
     local ExitCode
 
-    UpdateOutput="$(git -C "$PluginDir" pull --ff-only --quiet 2>&1)"
+    UpdateOutput="$(
+        GIT_TERMINAL_PROMPT=0 \
+        git -C "$PluginDir" pull --ff-only --quiet 2>&1
+    )"
     ExitCode=$?
 
     if (( ExitCode != 0 )); then
@@ -66,6 +70,36 @@ zsh-plugin-update () {
     else
         print -P "%F{green}✓ zsh:%f обновлён %F{cyan}$PluginName%f"
     fi
+
+    return 0
+}
+
+zsh-plugins-update () {
+    local PluginName
+    local PluginDir
+    local UpdateFailed=0
+
+    print -P "%F{yellow}↻ zsh:%f принудительная проверка плагинов"
+
+    for PluginName in "${lstZshPluginNames[@]}"; do
+        PluginDir="$ZSH_PLUGINS_DIR/$PluginName"
+
+        if [[ ! -d "$PluginDir/.git" ]]; then
+            zsh-plugin-clone "$PluginName" || UpdateFailed=1
+            continue
+        fi
+
+        zsh-plugin-update "$PluginName" || UpdateFailed=1
+    done
+
+    if (( UpdateFailed )); then
+        print -u2 -P "%F{red}✗ zsh:%f не все плагины удалось обновить"
+
+        return 1
+    fi
+
+    touch "$ZSH_PLUGINS_UPDATE_FILE"
+    print -P "%F{green}✓ zsh:%f плагины проверены"
 
     return 0
 }

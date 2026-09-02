@@ -8,39 +8,39 @@
 ```bash
 apt-get update
 apt-get install -y zsh git screen htop micro;
+```
+
+Пакеты для сервера разработки:
+```bash
 apt-get install nodejs npm composer; # дополнительно для разработки
 apt-get install bindfs; # для нескольких пользователей на одном сайте
 npm install -g @bitrix/cli; # для разработки на Битрикс
 
 ```
 
-## 2. Установить плагины для zsh
+## 2. Установить zsh
 
 Выполняется от пользователя
 
-Создайте каталог плагинов и скачайте два официальных community-плагина:
-
 ```bash
-mkdir -p ~/.config/zsh/plugins
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.config/zsh/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.config/zsh/plugins/zsh-syntax-highlighting
+wget https://raw.githubusercontent.com/Suntechnic/howto/refs/heads/main/hosts/files/.zshrc -O ~/.zshrc;
 ```
 
-Назначение плагинов:
+## 3. Настройка прокси
 
-- `zsh-autosuggestions` — показывает серое продолжение команды по истории и completion, аналогично fish.
-- `zsh-syntax-highlighting` — подсвечивает команду, аргументы, пути и очевидные ошибки ещё до нажатия Enter.
-
-Добавьте в `~/.zshrc` настройки содержимое [файла](files/.zshrc) и перезапустите zsh:
+Создаем файл ~/.vscode-server-insiders/server-env-setup и добавляем в него настройки прокси:
 
 ```bash
-wget https://raw.githubusercontent.com/Suntechnic/howto/refs/heads/main/hosts/files/.zshrc -O ~/.zshrc; source ~/.zshrc
+export HTTPS_PROXY='http://user:MdP_83JkadQL@partsdevice.ru:3128'
+export HTTP_PROXY="$HTTPS_PROXY"
+export https_proxy="$HTTPS_PROXY"
+export http_proxy="$HTTP_PROXY"
 ```
 
-## 3. Установить GitHub Copilot CLI
+## 4. Установить GitHub Copilot CLI
 
-Установка GitHub Copilot CLI на Linux:
+Установка GitHub Copilot CLI на Linux, вначале экспортировав переменные прокси из файла ~/.vscode-server-insiders/server-env-setup.
 
 ```zsh
-HTTP_PROXY='http://LOGIN:PASS@213.139.222.86:9935' HTTPS_PROXY='http://LOGIN:PASS@213.139.222.86:9935' curl -fsSL https://gh.io/copilot-install | bash
+source ~/.vscode-server-insiders/server-env-setup; curl -fsSL https://gh.io/copilot-install | bash
 ```
